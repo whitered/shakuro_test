@@ -21,7 +21,7 @@ class ShopsController < ApplicationController
   end
 
   def sell
-    supply = Supply.where(book_id: params[:book_id], shop_id: params[:shop_id]).first
+    supply = Supply.find_by_book_id_and_shop_id(params[:book_id], params[:shop_id])
     if !supply
       render json: 'not_found'
     else
