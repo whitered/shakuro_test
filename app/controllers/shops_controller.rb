@@ -13,10 +13,28 @@ class ShopsController < ApplicationController
       shop_data[:books_in_stock] << {
         id: supply.book_id,
         title: supply.book.title,
-        copies_in_stock: supply.books_supplied - supply.books_sold
+        copies_in_stock: supply.books_in_stock
       }
       map
     end.values.sort_by{ |data| -data[:books_sold_count] }
     render json: {shops: result}
+  end
+
+  def sell
+    supply = Supply.where(book_id: params[:book_id], shop_id: params[:shop_id]).first
+    if !supply
+      render json: 'not_found'
+    else
+      count = params[:count].to_i
+      if count == 0
+        render json: 'wrong_count'
+      elsif supply.books_in_stock < count
+        render json: 'not_in_stock'
+      else
+        supply.books_sold += count
+        supply.save
+        render json: 'ok'
+      end
+    end
   end
 end

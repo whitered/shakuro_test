@@ -9,4 +9,8 @@ class Supply < ApplicationRecord
       .where('books_supplied - books_sold > 0')
       .references(:book)
   end
+
+  def books_in_stock
+    books_supplied - books_sold
+  end
 end
