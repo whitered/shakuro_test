@@ -1,5 +1,5 @@
 class ShopsController < ApplicationController
-  def index
+  def list
     supplies = Supply.for_publisher(params[:publisher_id])
     result = supplies.inject({}) do |map, supply|
       shop = supply.shop

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ShopsController, type: :controller do
 
-  describe 'GET #index' do
+  describe 'list' do
     let(:publisher) { create(:publisher) }
     let(:book) { create(:book, publisher: publisher) }
     let(:shop) { create(:shop) }
@@ -11,7 +11,7 @@ RSpec.describe ShopsController, type: :controller do
     before { supply }
 
     def json
-      get :index, params: { publisher_id: publisher.id }
+      get :list, params: { publisher_id: publisher.id }
       JSON.parse(response.body)
     end
 
@@ -56,7 +56,7 @@ RSpec.describe ShopsController, type: :controller do
 
     context 'given wrong id' do
       it 'returns []' do
-        get :index, params: { publisher_id: 'wrong' }
+        get :list, params: { publisher_id: 'wrong' }
         json = JSON.parse(response.body)
         expect(json['shops']).to eq([])
       end
